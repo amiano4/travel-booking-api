@@ -9,6 +9,7 @@
         @import url("https://fonts.googleapis.com/css?family=Montserrat:700");
         .container {
             height: 100vh;
+            overflow: hidden;
             font-family: "Montserrat", "sans-serif";
             font-weight: bolder;
             display: flex;
