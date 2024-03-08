@@ -15,11 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(AuthController::class)->prefix('auth')->group(function() {
-    Route::post('', 'test');
-    Route::post('create', 'createUser');
+
+Route::controller(AuthController::class)->group(function() {
+    Route::post('login', 'login')->name('panelLogin');
+    Route::middleware('auth:sanctum')->get('refresh-auth', 'refreshAuth');
+    Route::middleware('auth:sanctum')->get('logout', 'logout');
 });
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->group(function () {
+//
+});
