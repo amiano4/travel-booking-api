@@ -25,7 +25,7 @@ return [
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => ['User-Token', 'User-Token-Status'],
 
     'max_age' => 0,
 
