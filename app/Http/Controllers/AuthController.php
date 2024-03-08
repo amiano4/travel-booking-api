@@ -4,36 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function createUser(Request $request) {
-        // return response()->json('Error.', 500);
-        $isValid = $request->validate([
-            'name' => 'string|required',
-            'email' => 'email|nullable',
-            'username' => 'string|required|unique:users,username',
-            'password' => 'required|confirmed|min:6',
+    public function login(Request $request) {
+        $request->validate([
+            'username' => 'required|exists:users,username',
+            'password' => 'required'
         ]);
 
+        $login = $request->only('username', 'password');
 
-        if($isValid)
-        if($user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => $request->password
-        ])) {
-            return response()->json([
-                'message' => 'A new user has been successfully created!',
-                'user_data' => $user
-            ]);
+        if(Auth::attempt($login)) {
+            $token = $request->user()->createToken('auth')->plainTextToken;
+            $user = Auth::user();
+            return  $this->sendAuthResponse($user, $token);
         }
 
         return response()->json('Error.', 500);
     }
 
-    public function test() {
-        return response()->json('Successfully connected.');
+    public function logout() {
+        Auth::logout();
+        return response()->json('Logout successully!', 200);
+    }
+
+    public function refreshAuth(Request $request) {
+        // revoke last token
+        $request->user()->currentAccessToken()->delete();
+
+        // create new token
+        $user = Auth::user();
+        $token = $request->user()->createToken('auth')->plainTextToken;
+
+        return $this->sendAuthResponse($user, $token);
+    }
+
+    private function sendAuthResponse(User $user, $token) {
+        return response()->json([
+            'name' => $user->name,
+            'username' => $user->username,
+        ], 200, [
+            'User-Token' => $token,
+            'User-Token-Status' => 'renewed',
+        ]);
     }
 }
