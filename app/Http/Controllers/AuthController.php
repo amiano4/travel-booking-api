@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function login(Request $request) {
         $request->validate([
-            'username' => 'required|exists:users,username',
+            'username' => 'required',
             'password' => 'required'
         ]);
 
@@ -22,7 +22,7 @@ class AuthController extends Controller
             return  $this->sendAuthResponse($user, $token);
         }
 
-        return response()->json('Error.', 500);
+        return response()->json('Incorrect username/password. Please try again.', 422);
     }
 
     public function logout(Request $request) {
