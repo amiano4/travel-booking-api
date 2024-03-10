@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    static $abPanelUser = 'client';
+    static $abAdminUser = 'super';
+
     public function login(Request $request) {
         $request->validate([
             'username' => 'required',
@@ -17,7 +20,12 @@ class AuthController extends Controller
         $login = $request->only('username', 'password');
 
         if(Auth::attempt($login)) {
-            $token = $request->user()->createToken('auth')->plainTextToken;
+            $ability = explode(',', self::$abAdminUser);
+            if(Auth::user()->user_type == 'client') {
+                $ability = explode(',', self::$abPanelUser);
+            }
+
+            $token = $request->user()->createToken('auth', $ability)->plainTextToken;
             $user = Auth::user();
             return  $this->sendAuthResponse($user, $token);
         }
@@ -36,7 +44,12 @@ class AuthController extends Controller
 
         // create new token
         $user = Auth::user();
-        $token = $request->user()->createToken('auth')->plainTextToken;
+        $ability = explode(',', self::$abAdminUser);
+        if(Auth::user()->user_type == 'client') {
+            $ability = explode(',', self::$abPanelUser);
+        }
+
+        $token = $request->user()->createToken('auth', $ability)->plainTextToken;
 
         return $this->sendAuthResponse($user, $token);
     }
@@ -45,6 +58,7 @@ class AuthController extends Controller
         return response()->json([
             'name' => $user->name,
             'username' => $user->username,
+            'type' => isset($user->user_type) && !empty($user->user_type) ? $user->user_type : null,
         ], 200, [
             'User-Token' => $token,
             'User-Token-Status' => 'renewed',
