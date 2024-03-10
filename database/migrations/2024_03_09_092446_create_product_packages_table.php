@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('product_packages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id')->nullable();
-            $table->string('item');
-            $table->double('rate', 8, 2);
-            $table->text('description')->nullable();
+            $table->json('details');
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('product_packages');
     }
 };
