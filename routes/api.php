@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InitializationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -25,10 +26,17 @@ Route::controller(AuthController::class)->group(function() use($loginAbilities) 
     Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->get('logout', 'logout');
 });
 
+Route::get('initialize/{website}', [InitializationController::class, 'handleInitialization']);
+
 // both for admin and client
 Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->group(function() {
     Route::controller(ProductController::class)->prefix('product')->group(function() {
         Route::post('add', 'add');
+        Route::get('flag/{product}/{status}', 'flag');
+    });
+
+    Route::controller(ProductController::class)->prefix('products')->group(function() {
+        Route::get('', 'productsByVendor');
     });
 });
 
@@ -41,5 +49,7 @@ Route::middleware('auth:sanctum', 'abilities:' . AuthController::$abAdminUser)->
 
 // regular client control
 Route::middleware('auth:sanctum', 'abilities:' . AuthController::$abPanelUser)->group(function () {
-    //
+    Route::controller(ProductController::class)->prefix('products')->group(function() {
+        // Route::get('', 'productsByVendor');
+    });
 });
