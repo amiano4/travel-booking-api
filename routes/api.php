@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,13 @@ Route::controller(AuthController::class)->group(function() use($loginAbilities) 
     Route::post('login', 'login')->name('panelLogin');
     Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->get('refresh-auth', 'refreshAuth');
     Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->get('logout', 'logout');
+});
+
+// both for admin and client
+Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->group(function() {
+    Route::controller(ProductController::class)->prefix('product')->group(function() {
+        Route::post('add', 'add');
+    });
 });
 
 // super admin control
