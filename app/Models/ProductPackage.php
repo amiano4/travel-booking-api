@@ -12,11 +12,12 @@ class ProductPackage extends Model
 
     protected $fillable = [
         'client_id',
+        'name',
         'details',
     ];
 
     protected $casts = [
-        'details' => 'array',
+        // 'details' => 'array',
     ];
 
     public function vendor() {

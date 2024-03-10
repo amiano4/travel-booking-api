@@ -15,6 +15,8 @@ class Product extends Model
         'item',
         'rate',
         'description',
+        'flag',
+        'require',
     ];
 
     protected $hidden = [
@@ -24,7 +26,8 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'rate' => 'double'
+        'rate' => 'double',
+        'require' => 'array',
     ];
 
     public function vendor() {

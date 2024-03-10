@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('product_packages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id')->nullable();
-            $table->json('details');
+            $table->string('name')->nullable();
+            $table->longText('details')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 

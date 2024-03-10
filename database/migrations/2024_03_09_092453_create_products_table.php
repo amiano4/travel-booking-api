@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('item');
             $table->double('rate', 8, 2);
             $table->text('description')->nullable();
+            $table->string('flag')->nullable();
+            $table->json('require')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
