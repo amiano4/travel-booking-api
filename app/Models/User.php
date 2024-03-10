@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'website',
         'email',
         'username',
         'password',
@@ -49,4 +50,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function webconfigs() {
+        return $this->hasMany(Webconfig::class, 'client_id');
+    }
+
+    public function products() {
+        return $this->hasMany(Product::class, 'client_id');
+    }
+
+    public function bookings() {
+        return $this->hasMany(Booking::class, 'client_id');
+    }
 }
