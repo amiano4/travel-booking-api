@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,13 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$loginAbilities = implode(',', [AuthController::$abAdminUser, AuthController::$abPanelUser]);
 
-Route::controller(AuthController::class)->group(function() {
+Route::controller(AuthController::class)->group(function() use($loginAbilities) {
     Route::post('login', 'login')->name('panelLogin');
-    Route::middleware('auth:sanctum')->get('refresh-auth', 'refreshAuth');
-    Route::middleware('auth:sanctum')->get('logout', 'logout');
+    Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->get('refresh-auth', 'refreshAuth');
+    Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->get('logout', 'logout');
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-//
+// super admin control
+Route::middleware('auth:sanctum', 'abilities:' . AuthController::$abAdminUser)->group(function () {
+    Route::controller(UserController::class)->prefix('user')->group(function() {
+        Route::post('create', 'createUser');
+    });
+});
+
+// regular client control
+Route::middleware('auth:sanctum', 'abilities:' . AuthController::$abPanelUser)->group(function () {
+    //
 });
