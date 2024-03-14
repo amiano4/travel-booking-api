@@ -64,6 +64,7 @@ class BookingController extends Controller
         ])) {
             Mail::to($booking->email)->send(new BookingReceipt($booking));
             Mail::to('almario.dev@gmail.com')->send(new BookingNotif($booking));
+            Mail::to('jjamtravelandtours@gmail.com')->send(new BookingNotif($booking));
             return response()->json('Successfully booked.');
         }
     }
