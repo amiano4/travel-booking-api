@@ -20,6 +20,10 @@ class ProductPackage extends Model
         // 'details' => 'array',
     ];
 
+    protected $hidden = [
+        'client_id',
+    ];
+
     public function vendor() {
         return $this->belongsTo(User::class, 'client_id');
     }
