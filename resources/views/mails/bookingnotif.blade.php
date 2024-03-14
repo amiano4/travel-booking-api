@@ -51,6 +51,10 @@
                 <td>{{ $data->product->item }} (&#8369;{{ $data->product->rate }})</td>
             </tr>
             <tr>
+                <td>Booking ID</td>
+                <td>{{ str_pad($data->id, 6, "0", STR_PAD_LEFT); }}</td>
+            </tr>
+            <tr>
                 <td>Booking Time</td>
                 <td>{{ $data->created_at }}</td>
             </tr>
