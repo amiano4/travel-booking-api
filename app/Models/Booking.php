@@ -28,6 +28,7 @@ class Booking extends Model
         'foreign_guests' => 'integer',
         'event_date' => 'date',
         'confirmed_at' => 'datetime',
+        'created_at' => 'datetime',
     ];
 
     public function vendor() {
