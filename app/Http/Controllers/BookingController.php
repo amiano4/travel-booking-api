@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -32,14 +33,34 @@ class BookingController extends Controller
             'fullname' => 'string|required',
             'email' => 'email|required',
             'contact' => 'string|required',
-            'locals' => 'numeric|min:0',
-            'foreigns' => 'numeric|min:0',
-            'eventdate' => 'date|required',
-            'pickup' => 'string|nullable',
-            'request' => 'string|nullable',
-            'client' => 'required|exists:users,website',
-            'product' => 'nullable|exists:products,id',
+            'local_guests' => 'numeric|min:0',
+            'foreign_guests' => 'numeric|min:0',
+            'event_date' => 'date|required',
+            'pick_up' => 'string|nullable',
+            'special_requests' => 'string|nullable',
+            'client' => 'string|required',
+            'product' => 'required|exists:products,id',
         ]);
+
+        $clientId = User::unfork($request->client ?? null);
+        if(!$clientId && !($clientData = User::find($clientId))) {
+            return response()->json('ID not found.', 422);
+        }
+
+        if($booking = Booking::create([
+            'client_id' => $clientId,
+            'product_id' => $request->product,
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'contact' => $request->contact,
+            'local_guests' => $request->local_guests,
+            'foreign_guests' => $request->foreign_guests,
+            'event_date' => $request->event_date,
+            'pick_up_info' => $request->pick_up,
+            'special_requests' => $request->special_requests,
+        ])) {
+            return response()->json('Successfully booked.');
+        }
     }
 
     /**
