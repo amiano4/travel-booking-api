@@ -85,6 +85,8 @@ class User extends Authenticatable
 
     public static function unfork($str) {
         try {
+            if(!isset($str)) return false;
+
             $len = intval(substr($str, -2));
             $id = '';
             $str = substr($str, 0, -2);
