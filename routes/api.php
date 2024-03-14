@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\InitializationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -27,6 +28,10 @@ Route::controller(AuthController::class)->group(function() use($loginAbilities) 
 });
 
 Route::get('initialize/{website}', [InitializationController::class, 'handleInitialization']);
+
+Route::controller(BookingController::class)->prefix('book')->group(function() {
+    Route::post('', 'store');
+});
 
 // both for admin and client
 Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->group(function() {
