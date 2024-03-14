@@ -10,6 +10,14 @@ class InitializationController extends Controller
 {
     public function handleInitialization($website) {
         try {
+            // remove www alias
+            $f = explode('.', $website);
+
+            if($f[0] == 'www') {
+                unset($f[0]);
+                $website = implode('.', $f);
+            }
+
             $client = User::where('website', $website)
                 ->where('user_type', 'client')
                 ->with(['products' => function ($query) {
