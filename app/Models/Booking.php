@@ -29,6 +29,15 @@ class Booking extends Model
         'event_date' => 'date',
         'confirmed_at' => 'datetime',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    protected $hidden = [
+        'client_id',
+        'deleted_at',
+        'created_at',
+        'updated_at',
+        'confirmed_at',
     ];
 
     public function vendor() {
