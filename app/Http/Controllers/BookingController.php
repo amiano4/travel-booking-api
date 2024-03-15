@@ -18,9 +18,13 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $bookings = User::where('id', Auth::user()->id)->with([
+            'bookings' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }
+        ])->first()->bookings;
         return response()->json([
-            'bookings' => BookingPanelResource::collection($user->bookings),
+            'bookings' => BookingPanelResource::collection($bookings),
         ]);
     }
 
