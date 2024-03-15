@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookingPanelResource;
 use App\Mail\BookingNotif;
 use App\Mail\BookingReceipt;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
@@ -16,7 +18,10 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        return response()->json([
+            'bookings' => BookingPanelResource::collection($user->bookings),
+        ]);
     }
 
     /**
