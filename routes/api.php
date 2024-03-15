@@ -37,16 +37,22 @@ Route::controller(BookingController::class)->prefix('book')->group(function() {
 Route::middleware('auth:sanctum', 'ability:' . $loginAbilities)->group(function() {
     Route::controller(ProductController::class)->prefix('product')->group(function() {
         Route::post('add', 'add');
+        Route::post('update', 'update');
+        Route::get('remove/{product}', 'delete');
         Route::get('flag/{product}/{status}', 'flag');
     });
 
     Route::controller(ProductController::class)->prefix('products')->group(function() {
         Route::get('', 'productsByVendor');
     });
+
+    Route::controller(BookingController::class)->prefix('bookings')->group(function() {
+        Route::get('', 'index');
+    });
 });
 
 // super admin control
-Route::middleware('auth:sanctum', 'abilities:' . AuthController::$abAdminUser)->group(function () {
+Route::middleware('auth:sanctum', 'abilities:' .    AuthController::$abAdminUser)->group(function () {
     Route::controller(UserController::class)->prefix('user')->group(function() {
         Route::post('create', 'createUser');
     });
