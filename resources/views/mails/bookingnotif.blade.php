@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <td>Event Date</td>
-                <td>{{ $data->event_date->format('Y-m-d') }}</td>
+                <td>{{ $data->event_date->format('F d, Y') }}</td>
             </tr>
             <tr>
                 <td>Pick Up Info</td>
@@ -56,7 +56,7 @@
             </tr>
             <tr>
                 <td>Booking Time</td>
-                <td>{{ $data->created_at }}</td>
+                <td>{{ $data->created_at->format('F j, Y, g:i A') }}</td>
             </tr>
         </table>
         <br><br>
