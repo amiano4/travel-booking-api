@@ -1,6 +1,20 @@
 <html>
 
-<head></head>
+<head>
+    <style>
+        .reftable {
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            width: 100%;
+        }
+        .reftable td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            color:#455056;
+            font-size: 15px;
+        }
+    </style>
+</head>
 
 <body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
   <!--100% body table-->
@@ -40,8 +54,46 @@
                     <span style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
                     <p style="color:#455056; font-size:15px;line-height:24px; margin:0; margin-top: 10px">
                         For your reference: <br><br>
-                        Your booking ID is <span style="background-color: #f6ae5d;padding: .25rem .35rem;color: #fff;border-radius: 4px;font-weight: 600;">#{{ str_pad($data->id, 6, "0", STR_PAD_LEFT);  }}</span>
+                        {{-- Your booking ID is <span style="background-color: #f6ae5d;padding: .25rem .35rem;color: #fff;border-radius: 4px;font-weight: 600;">#{{ str_pad($data->id, 6, "0", STR_PAD_LEFT);  }}</span> --}}
                     </p>
+                    <table class="reftable">
+                        <tr>
+                            <td>Booking ID</td>
+                            <td>{{ str_pad($data->id, 6, "0", STR_PAD_LEFT); }}</td>
+                        </tr>
+                        <tr>
+                            <td>Full Name</td>
+                            <td>{{ $data->fullname }}</td>
+                        </tr>
+                        <tr>
+                            <td>Local Guests</td>
+                            <td>{{ $data->local_guests }}</td>
+                        </tr>
+                        <tr>
+                            <td>Foreign Guests</td>
+                            <td>{{ $data->foreign_guests }}</td>
+                        </tr>
+                        <tr>
+                            <td>Event Date</td>
+                            <td>{{ $data->event_date->format('F d, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pick Up Info</td>
+                            <td>{{ $data->pick_up_info }}</td>
+                        </tr>
+                        <tr>
+                            <td>Special Request</td>
+                            <td>{{ $data->special_requests }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pax/Rate (Price per person)</td>
+                            <td>{{ $data->product->item }} (&#8369;{{ $data->product->rate }})</td>
+                        </tr>
+                        <tr>
+                            <td>Booking Time</td>
+                            <td>{{ $data->created_at->format('F j, Y, g:i A') }}</td>
+                        </tr>
+                    </table>
                     <p style="color:#455056; font-size:15px;line-height:24px; margin:0; margin-top: 35px">
                     </p>
                   </td>
